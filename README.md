@@ -1,3 +1,3 @@
 # Data-Science-Project
-## To inastall numpy and pandas run the following command on pycharm terminal
+## To install numpy and pandas run the following command on PyCharm terminal
  pip install numpy pandas
