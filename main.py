@@ -1,6 +1,9 @@
 import numpy as np
 import pandas as pd
 from pandas import read_csv
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.preprocessing import StandardScaler
 
 dataset=pd.read_csv('Obesity.csv')
 
@@ -78,3 +81,104 @@ print(f"Number of records in each Age bin:\n")
 print(bin_counts)
 print("\n===============\n")
 #====
+
+#==== (i)  Identify and print the row corresponding to the maximum value of a selected numerical feature.
+max_weight_row = dataset[dataset['Weight'] == dataset['Weight'].max()]
+print("Max weight row\n")
+print(max_weight_row)
+print("\n===============\n")
+#====
+
+#==== (j) Construct a boxplot for an attribute you consider significant and justify the selection
+#FCVC Frequency of vegetable consumption (scale from 1 to 3).
+df = pd.DataFrame(dataset)
+sns.set(style="whitegrid")
+plt.figure(figsize=(8, 6))
+sns.boxplot(x=df['FCVC'])
+plt.title("Boxplot of Frequency of Vegetable Consumption (FCVC)", fontsize=16)
+plt.xlabel("FCVC (1=Low, 2=Medium, 3=High)", fontsize=12)
+plt.show()
+#====
+
+
+#==== (k) Generate a histogram for a chosen attribute and provide an explanation for its relevance.
+df = pd.DataFrame(dataset)
+sns.set(style="whitegrid")
+plt.figure(figsize=(8, 6))
+sns.histplot(df['NCP'], bins=4, kde=False, color='skyblue', edgecolor='black')
+plt.title("Histogram of Number of Main Meals Per Day (NCP)", fontsize=16)
+plt.xlabel("Number of Meals", fontsize=12)
+plt.ylabel("Frequency", fontsize=12)
+plt.xticks(range(int(min(df['NCP'])), int(max(df['NCP'])) + 1, 1))  # Set ticks in steps of 1
+plt.show()
+
+# Explanation for why NCP was chosen for the histogram:
+"""
+We chose the 'NCP' (Number of Main Meals Per Day) attribute for the histogram because it provides 
+insight into dietary habits. Understanding how many main meals people consume in a day can help with 
+various analyses related to health, nutrition, and lifestyle.
+
+Histograms are particularly useful for visualizing the distribution of discrete data, and NCP fits this 
+category as it is a count variable (integer values).
+
+This histogram allows us to:
+1. Identify the most common number of main meals people have per day.
+2. Check the distribution of meals and whether people tend to have more or fewer meals on average.
+3. Help us understand if there is any skewness in the data toward people with fewer or more meals.
+4. Inform decisions regarding dietary recommendations, public health initiatives, or understanding 
+   lifestyle habits in different populations.
+"""
+
+#===
+
+#=== (l) Create a scatterplot using two attributes and interpret the relationship observed.
+df = pd.DataFrame(dataset)
+
+# Set the style for the plot
+sns.set(style="whitegrid")
+
+# Create the scatterplot for AGE vs. Weight
+plt.figure(figsize=(8, 6))
+sns.scatterplot(data=df, x='Age', y='Weight', color='purple')
+
+# Add a title and labels
+plt.title("Scatterplot of AGE vs. Weight", fontsize=16)
+plt.xlabel("Age", fontsize=12)
+plt.ylabel("Weight", fontsize=12)
+
+# Show the plot
+plt.show()
+
+# Interpretation of the scatterplot:
+"""
+The scatterplot visualizes the relationship between AGE and Weight.
+
+Each point on the plot represents an individual. The x-axis represents their AGE, 
+and the y-axis represents their Weight.
+
+By observing the scatterplot, we can interpret:
+- If there is a positive or negative correlation between AGE and Weight.
+- Whether the points are scattered randomly or if there's a trend, such as older individuals having higher or lower weights.
+- Whether there are any outliers in the data, such as individuals who are significantly heavier or lighter than expected for their age.
+
+For example, if the points tend to rise from left to right, it might indicate a positive correlation between AGE and Weight, where older individuals tend to weigh more.
+Conversely, if the points tend to decrease from left to right, it might suggest a negative correlation.
+"""
+
+#===
+
+#=== (m)
+# Create DataFrame
+df = pd.DataFrame(dataset)
+
+# Initialize the StandardScaler
+scaler = StandardScaler()
+
+# Select numerical columns that you want to standardize
+numerical_cols = ['Age', 'Height', 'Weight', 'FCVC', 'NCP']
+
+# Apply StandardScaler to the selected columns
+df[numerical_cols] = scaler.fit_transform(df[numerical_cols])
+
+# Display the standardized data
+print(df)
