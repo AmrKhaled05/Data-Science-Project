@@ -46,17 +46,18 @@ print("20th Percentile:\n", percentile20th)
 
 
 print("========================================================================================")
+print("a in section 2")
 #==== (a) Apply a filter to select rows based on a specific condition of your choice (e.g., select records where a value exceeds a certain threshold)
 filtered_data = dataset[dataset["Age"] > 27]
-print(filtered_data)
+print(filtered_data.to_string())
 print("\n===============\n")
 #====
 
 #==== (b) Identify records where a chosen attribute starts with a specific letter and count how many records match this condition
-filtered_data = dataset[dataset["Gender"].str.startswith("F")]
+filtered_data = dataset[dataset["Gender"].str.startswith("M")]
 count = len(filtered_data)
-print(filtered_data)
-print(f"Number of records where Gender starts with 'F': {count}")
+print(filtered_data.head().to_string())
+print(f"Number of records where Gender starts with 'M': {count}")
 print("\n===============\n")
 #====
 
@@ -71,8 +72,10 @@ print("\n===============\n")
 #==== (d) Convert the data type of a numerical column from integer to string
 dataset["Age"] = dataset["Age"].astype("string")
 print(f"Age was Integer now It is : {dataset["Age"].dtype}\n")
-print(dataset.head())
+print(dataset.head().to_string())
+dataset["Age"] = dataset["Age"].astype("float64")
 print("\n===============\n")
+
 #====
 
 #==== (e) Group the dataset based on two selected categorical features and analyze the results
@@ -124,14 +127,22 @@ print(max_weight_row)
 print("\n===============\n")
 #====
 
+
+
 #==== (j) Construct a boxplot for an attribute you consider significant and justify the selection
 #FCVC Frequency of vegetable consumption (scale from 1 to 3).
-df = pd.DataFrame(dataset)
-sns.set(style="whitegrid")
-plt.figure(figsize=(8, 6))
-sns.boxplot(x=df['FCVC'])
-plt.title("Boxplot of Frequency of Vegetable Consumption (FCVC)", fontsize=16)
-plt.xlabel("FCVC (1=Low, 2=Medium, 3=High)", fontsize=12)
+# df = pd.DataFrame(dataset)
+# sns.set(style="whitegrid")
+# plt.figure(figsize=(8, 6))
+# sns.boxplot(x=df['FCVC'])
+# plt.title("Boxplot of Frequency of Vegetable Consumption (FCVC)", fontsize=16)
+# plt.xlabel("FCVC (1=Low, 2=Medium, 3=High)", fontsize=12)
+# plt.show()
+# Convert the 'Age' column to numeric type
+dataset['Age'] = pd.to_numeric(dataset['Age'], errors='coerce')
+# Create the boxplot
+plt.boxplot(dataset['Age'].dropna())  # Drop any NaN values that may have been introduced
+plt.title("Boxplot of Age", fontsize=16)
 plt.show()
 #====
 
